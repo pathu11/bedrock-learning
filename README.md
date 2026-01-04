@@ -1,4 +1,4 @@
-## Generative AI with Amazon Bedrock
+# Generative AI with Amazon Bedrock
 
 ### Hands-on Learning & RAG Implementations
 
@@ -20,6 +20,7 @@ Through this project, I explored:
 - Secure configuration using environment variables (.env)
 
 📁 Repository Structure
+```
 bedrock-learning/
 │
 ├── RAG_bedrock/
@@ -33,7 +34,7 @@ bedrock-learning/
 ├── requirements.txt
 ├── .env.example              # Environment variable template
 └── README.md
-
+```
 ### Environment Configuration (Important)
 
 This project uses a .env file to securely manage credentials.
@@ -41,7 +42,7 @@ This project uses a .env file to securely manage credentials.
 #### Create a .env file in the root directory:
 ```
 AWS_BEARER_TOKEN_BEDROCK=your_bedrock_token_here
-AWS_REGION=us-east-1
+AWS_REGION=ap-southeast-1
 ```
 
 
