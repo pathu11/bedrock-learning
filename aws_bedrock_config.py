@@ -1,6 +1,8 @@
 import boto3
 import os
 from dotenv import load_dotenv
+from langchain_core.prompts import PromptTemplate
+
 
 # 0. Load environment variables
 load_dotenv()
@@ -12,13 +14,32 @@ client = boto3.client(
     region_name='ap-southeast-1'
 )
 
+# we canpass the arguments through the prompt template directly to aws bedrock
+# prompt from prompt.py
+multi_var_prompt = PromptTemplate(
+    input_variables=["customerName", "feedbackFromCustomer"],
+    template="""
+Human: Create an email to {customerName} in response to the following customer service feedback:
+
+<customer_feedback>
+{feedbackFromCustomer}
+</customer_feedback>
+
+Assistant:
+"""
+)
+
+prompt = multi_var_prompt.format(
+    customerName="John Doe",
+    feedbackFromCustomer="""Hello AnyCompany,
+I am very pleased with the recent experience I had when I called your customer support.
+I got an immediate call back, and the representative was very knowledgeable in fixing the problem.
+We are very happy with the response provided and will consider recommending it to other businesses.
+"""
+)
+
 # ... rest of your code ...
 
-# # 2. Create a Bedrock Runtime client
-# bedrock = boto3.client(
-#      service_name='bedrock',
-#      region_name='ap-southeast-1'
-#      )
 # # List available models for the region
 # model_list=bedrock.list_foundation_models()
 # for x in range(len(model_list.get('modelSummaries'))):
@@ -37,7 +58,8 @@ try:
         messages=[
             {
                 "role": "user",
-                "content": [{"text": user_message}]
+                # "content": [{"text": user_message}]
+                "content": [{"text": prompt}]
             }
         ],
         inferenceConfig={
